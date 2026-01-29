@@ -1,0 +1,17 @@
+.DS_Store
+.vscode/
+.fleet/
+.trash/
+.trae/
+.coco/
+.claude/
+log/
+
+# 操作系统临时文件
+Thumbs.db
+*.tmp
+
+# 同步工具冲突文件
+*.sync-conflict-*
+
+node_modules/
