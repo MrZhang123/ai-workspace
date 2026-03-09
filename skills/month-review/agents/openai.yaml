@@ -1,0 +1,7 @@
+interface:
+  display_name: "Month Review"
+  short_description: "补月度复盘并回写季度 OKR 的月回顾结构"
+  default_prompt: "Use $month-review to summarize one month from my Obsidian planning notes and update the matching quarterly OKR review sections."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,127 +1,35 @@
 ---
 name: daily-review
-description: 智能每日回顾与规划助手。读取当日任务与本周目标进度，输出今日复盘与明日计划建议，并在月度规划文件中写入明日规划模板。当用户提到“每日复盘”“今天总结”“明日规划”“daily review”“今天完成了什么”“明天做什么”“本周进度”等日维度回顾/规划请求时使用。
+description: Daily review and tomorrow planning for Obsidian monthly planning files. Analyze one day’s completion, infer the local note style, summarize today, and update the target day block without creating duplicate headings. Use when the user asks for “每日复盘”“今天总结”“明日规划”“补今日回顾”“补明天计划”“今天完成了什么”“明天做什么”“daily review” or similar day-level review/planning tasks.
 ---
 
-# 每日复盘与明日规划 Skill（Daily Review）
+# Daily Review
 
-此 Skill 用于基于 Obsidian 月度规划文件完成每日复盘，并生成可执行的明日计划。
+Use this skill to update one day block inside `Plan/每日规划/{YYYY}/Q{Q}/{YYYY.MM}.md`.
 
-## 核心能力（必须同时满足）
+Read [references/obsidian-daily-patterns.md](references/obsidian-daily-patterns.md) before editing. It captures the observed 2026 file structure, naming variants, counting rules, and fallback templates.
 
-1. 定位当日所在的月度规划文件与周标题块。
-2. 统计今日任务完成情况并输出客观分析。
-3. 结合周目标剩余项生成明日计划。
-4. 在文件中插入明日规划与今日回顾模板。
+## Workflow
 
-## 路径与时间规则
+1. Resolve the target day. Default to reviewing today and planning tomorrow. Honor explicit dates from the user.
+2. Find candidate month files for the target day and its week. Inspect adjacent months when the week crosses month boundaries. Prefer the file that already contains the target week heading or target day heading.
+3. Detect the local style from the nearest completed day blocks in the same week. Reuse heading depth, section names, and block layout before falling back to a default template.
+4. Update in place:
+   - If the target day heading already exists, fill only missing sections or obviously empty placeholders.
+   - If the target day heading exists but is empty, complete that block instead of creating a new heading.
+   - If the day block already contains a review section, preserve the existing name and structure.
+5. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when a task owns child checkboxes. Use child completion as supporting detail instead of double-counting.
+6. Write tomorrow's plan with carry-over P0 items first, then add at most 1-2 new tasks that align with the current week.
+7. Leave reflective answers blank unless the note already contains objective facts written by the user.
 
-1. 默认处理“今天与明天”；若用户指定日期，按用户指定日期执行。
-2. 月度规划文件路径：`Plan/每日规划/{YYYY}/Q{Q}/{YYYY.MM}.md`。
-3. 周标题兼容：`# MM.DD～MM.DD ...`、`# MM.DD~MM.DD ...`、`第X周/第X周+备注`。
-4. 严禁硬编码年份、季度或月份。
+## Output
 
-## 解析规则（统一口径）
+- In chat, report done/todo counts, the most important carry-over risk, and 2-3 concrete suggestions.
+- In file, preserve the local wording. Prefer the file's dominant section names such as `今日回顾`, `今日全天回顾`, or `昨日回顾`.
 
-1. 将每条 `- [ ]`、`- [x]`、`- [X]` 视为 1 个任务（含缩进子任务）。
-2. 任务包含 `P0`/`P1` 则归类到对应优先级，否则归类为“未标注”。
-3. 今日统计优先读取“今日规划”任务，若“今日回顾”存在勾选任务也计入。
-4. 周进度评估基于当前周块内已过去日期的完成情况，不跨周统计。
+## Guardrails
 
-## 自动执行流程（Workflow）
-
-1. 定位月度文件与当前周块、今日日标题。
-2. 统计今日完成率、P0/P1 分布、未完成关键项。
-3. 评估本周目标推进状态，识别延期与风险。
-4. 生成明日计划（优先承接未完成 P0 和周目标剩余关键项）。
-5. 在文件中按既有时间顺序插入“明日”章节；若已存在同日期标题，则只补全缺失内容，不重复创建。
-
-## 输出规范
-
-### 1）对话窗口输出（Chat Output）
-
-在对话中输出如下结构：
-
-```markdown
-**📅 今日任务分析（{Today}）**
-
-- ✅ 已完成：{Done} 项
-- ❌ 未完成：{Todo} 项（含 P0：{TodoP0} 项）
-- 📊 完成率：{Pct}%
-
-**📅 本周全局概览**
-
-- 工作：[ {BarWork} ] {PctWork}%（{DoneWork}/{TotalWork}）
-- 个人：[ {BarLife} ] {PctLife}%（{DoneLife}/{TotalLife}）
-- 风险提示：{RiskSummary}
-- 策略建议：{TacticalAdvice}
-
-**💡 今日回顾参考**
-
-- 效率分析：{EfficiencyInsight}
-- 改进建议：{Improvement1}
-- 改进建议：{Improvement2}
-
-_已在 `{Filename}` 中生成/更新明日规划与今日回顾模板。_
-```
-
-### 2）文件写入规范（File Update）
-
-在目标月度文件中，定位当前周标题块内“今日”日标题（如 `## 02.10 周二`），并按该文件的既有时间顺序写入明日章节（常见是时间倒序：最新在上）。
-
-```markdown
-## {MM.DD} {Weekday}（明日日期）
-
-### 今日规划
-
-> 今天最重要的事情是什么？
-
-#### 今天的 Top Goal 是什么？
-
-##### 工作
-
-- [ ] {顺延的 P0 任务}
-- [ ] {与周目标对齐的新任务}
-
-##### 个人
-
-- [ ] {个人目标任务}
-
-#### 今天不做什么？为什么？
-
-- {建议不做事项}
-
-### 今日全天回顾
-
-#### 今日全天的效率如何？（评分 1-10）
-
-- 效率评分（1–10）：
-- 深度工作时长（分钟）：
-- 目标达成（工作/个人）：
-
-#### 今日全天的个人学习情况如何？
-
-- 最小产出（英语/阅读/写作）：
-- 最大卡点（仅 1 条）：
-
-#### 今日全天的饮食起居状况如何？
-
-- 健身（是/否；项目/时长）：
-- 饮食（是否按计划；主要偏差 1 条）：
-- 睡眠（入睡时间 / 时长 / 醒后感受 1 句）：
-
-#### 今日全天做得不好的地方有哪些？如何改进？
-```
-
-## 一致性要求
-
-- 进度条使用 10 格：`[▓▓▓▓▓▓░░░░]`，填充格数 = `round(完成率 × 10)`。
-- 完成率百分比保留整数。
-- 对话以“洞察与建议”为主，不输出完整任务清单。
-
-## 注意事项
-
-- 所有日期识别、文件定位、结构解析通过自然语言处理完成，不生成代码块脚本。
-- “今日全天回顾”仅写模板，不自动填写主观内容。
-- 必须保证写入位置仍处于当前周标题块内。
-- 所有标点使用中文标点。
+- Treat day-level requests only. A pure “本周进度怎么样” request belongs to `weekly-review` unless the user also asks for tomorrow planning.
+- Keep the edit inside the current week block.
+- Ignore malformed checklist lines and explanatory bullets without checkboxes.
+- If more than one candidate week block matches, choose the one whose heading text explicitly contains the target date. If ambiguity remains, explain it before editing.

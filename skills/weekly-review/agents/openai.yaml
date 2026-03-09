@@ -1,0 +1,7 @@
+interface:
+  display_name: "Weekly Review"
+  short_description: "补周复盘与下周计划，保持周块层级稳定"
+  default_prompt: "Use $weekly-review to summarize this week and update the weekly review section in my Obsidian planning note."
+
+policy:
+  allow_implicit_invocation: true

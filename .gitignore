@@ -6,6 +6,7 @@
 .coco/
 .claude/
 log/
+skills/skill-creator
 
 # 操作系统临时文件
 Thumbs.db

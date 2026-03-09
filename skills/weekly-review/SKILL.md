@@ -1,130 +1,35 @@
 ---
 name: weekly-review
-description: 周复盘与下周规划助手。读取当前周任务执行情况，输出周总结、关键模式与下周调整建议，并在周标题块末尾写入复盘模板。当用户提到“周复盘”“本周总结”“下周计划”“weekly review”“week summary”“这周进度怎么样”等周维度回顾/规划请求时使用。
+description: Weekly review and next-week planning for Obsidian monthly planning files. Analyze the current or specified week, infer the local section style, summarize milestones and risks, and update one week-level review section inside the week block without nesting it under personal subheadings. Use when the user asks for “周复盘”“本周总结”“下周计划”“这周进度怎么样”“weekly review”“week summary” or similar week-level review/planning tasks.
 ---
 
-# 周复盘与规划 Skill（Weekly Review）
+# Weekly Review
 
-此 Skill 用于完成周维度复盘，并沉淀可执行的下周调整动作。
+Use this skill to update one week block inside `Plan/每日规划/{YYYY}/Q{Q}/{YYYY.MM}.md`.
 
-## 核心能力（必须同时满足）
+Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-patterns.md) before editing. It captures the observed 2026 week structures, naming variants, insertion boundaries, counting rules, and fallback template.
 
-1. 定位当前周标题块并读取工作/个人任务。
-2. 统计周完成情况与优先级分布。
-3. 输出总结、模式观察与下周策略。
-4. 在当前周块末尾插入周复盘模板。
+## Workflow
 
-## 路径与时间规则
+1. Resolve the target week. Default to the current week. Honor an explicit date range or week name from the user.
+2. Find candidate month files by searching the current month and adjacent month files. Treat the week heading text as the source of truth even when the span is not a standard 7-day week.
+3. Detect the local weekly style from the current file. Reuse the existing section name if the file already uses `周总结`, `本周总结`, or `📝 本周复盘`.
+4. Update in place:
+   - If a weekly review section already exists in the target week block, update that section instead of creating a second one.
+   - Insert the weekly review at week-block top level, after the weekly goal sections and before the first day heading.
+   - Match the heading depth used by sibling week-level sections and day headings. Do not nest the review under `## 个人` or any category subsection.
+5. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when parent tasks own child checkboxes.
+6. If the week is still in progress, say `统计截至 {Today}` in chat output.
+7. Produce a concise summary with milestones, risks, and next-week adjustments. Prefer insight over task-by-task narration.
 
-1. 默认复盘当前周；若用户指定周范围，按用户指定范围执行。
-2. 月度规划文件路径：`Plan/每日规划/{YYYY}/Q{Q}/{YYYY.MM}.md`。
-3. 周标题兼容：`# MM.DD～MM.DD ...`、`# MM.DD~MM.DD ...`、`第X周/第一周...`，支持尾部备注。
-4. 严禁硬编码年份、季度或月份。
+## Output
 
-## 解析规则（统一口径）
+- In chat, report work/personal progress, 1-3 milestones, the main bottleneck, and 2-3 next-week adjustments.
+- In file, preserve the local naming and tone instead of forcing a new review title.
 
-1. 将每条 `- [ ]`、`- [x]`、`- [X]` 视为 1 个任务（含缩进子任务）。
-2. 任务包含 `P0`/`P1` 则归类到对应优先级，否则归类为“未标注”。
-3. 周统计以当前周标题块内容为准，不跨周计算。
-4. 里程碑优先提炼“已完成 + 可交付”的任务，不做流水账。
+## Guardrails
 
-## 自动执行流程（Workflow）
-
-1. 定位月度文件与当前周标题块。
-2. 读取周块内任务，统计完成率、P0/P1 分布与未完成关键项。
-3. 生成本周里程碑、关键观察、主要问题。
-4. 输出下周调整（硬触发、最小闭环、节奏策略）。
-5. 在当前周块末尾、下一周标题前插入复盘模板；若模板已存在，仅补全缺失项。
-
-## 输出规范
-
-### 1）对话窗口输出（Chat Output）
-
-在对话中输出如下结构：
-
-```markdown
-**📅 本周总结（{WeekRange}）**
-
-**进度评估**
-
-- 评分（1-10）：{Score}
-- 工作完成率：{WorkPct}%（{DoneWork}/{TotalWork}）
-- 个人完成率：{LifePct}%（{DoneLife}/{TotalLife}）
-- 本周里程碑（1-3 条）：
-  - {Milestone1}
-
-**一句话总结**
-
-- {OneLineSummary}
-
-**节奏与状态**
-
-- {RhythmInsight}
-
-**关键观察**
-
-- {Pattern1}
-- {Pattern2}
-
-**主要问题（事实层）**
-
-- {Issue1}
-- {Issue2}
-
-**下周调整（可执行）**
-
-- 硬触发：{HardTrigger}
-- 最小闭环：{SmallestLoop}
-- 节奏策略：{CadenceStrategy}
-
-_已在 `{Filename}` 的当前周块末尾生成/更新“本周复盘”模板。_
-```
-
-### 2）文件写入规范（File Update）
-
-在当前周内容末尾（下一周标题前）插入：
-
-```markdown
-### 📝 本周复盘（Weekly Review）
-
-#### 进度评估
-
-- 评分（1-10）：
-- 核心产出：
-  - {里程碑 1}
-  - {里程碑 2（可选）}
-
-#### 一句话总结
-
--
-
-#### 节奏与状态
-
--
-
-#### 关键观察
-
--
-
-#### 思考与改进
-
-- 做得好的：
-- 需要改进的：
-- 下周重点：
-
-#### 下周调整（可执行）
-
--
-```
-
-## 一致性要求
-
-- 对话输出以总结与洞察为主，不逐条罗列任务清单。
-- 复盘未结束周时，说明“统计截至 {Today}”。
-- 插入位置必须位于当前周标题块内，且在下一周标题之前。
-
-## 注意事项
-
-- 所有日期识别、文件定位、结构解析通过自然语言处理完成，不生成代码块脚本。
-- 所有标点使用中文标点。
-- 文件中“核心产出”仅写 1-3 条里程碑式内容。
+- Support non-standard week spans such as holiday blocks. Do not assume every week covers exactly seven days.
+- Keep the edit inside the target week block and before the next week heading.
+- Ignore malformed checklist lines and explanatory bullets without checkboxes.
+- If more than one week heading could match, prefer the heading explicitly named by the user or the one containing today's date. If ambiguity remains, explain it before editing.

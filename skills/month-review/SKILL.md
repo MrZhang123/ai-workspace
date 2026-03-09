@@ -1,136 +1,36 @@
 ---
 name: month-review
-description: 月度复盘与下月规划助手。读取 Obsidian 月度规划和季度 OKR，汇总本月完成率、里程碑、偏差与模式，生成下月重点任务与执行节奏，并将“上月总结 + 下月重点”按 O1-O4 维度写入季度 OKR 文件。用户提到“月度复盘”“月总结”“下月计划”“OKR 对齐”“month review”“月末复盘/规划”等月维度回顾/规划请求时使用。
+description: Monthly review and next-month planning for Obsidian monthly planning files and quarterly OKR notes. Analyze one month’s progress, map it into each quarterly objective, and update the objective-first monthly review area plus the month overview block without duplicating month headings. Use when the user asks for “月度复盘”“月总结”“下月计划”“OKR 回顾”“OKR 对齐”“month review” or similar month-level review/planning tasks.
 ---
 
-# 月度复盘与下月规划 Skill（Month Review）
+# Month Review
 
-此 Skill 用于从 Obsidian 月度规划文件提取周/日任务完成情况，生成月度总结，并按季度 OKR（O1-O4）输出下月重点。
+Use this skill to summarize one month from `Plan/每日规划` and write the result into the matching quarterly OKR note under `Plan/年度规划`.
 
-## 核心能力（必须同时满足）
+Read [references/okr-month-review-patterns.md](references/okr-month-review-patterns.md) before editing. It captures the observed 2026 quarterly OKR structure, objective mapping, month-summary layout, and update rules.
 
-1. 定位月度规划文件并解析周/日任务。
-2. 聚合任务完成情况并提炼里程碑、偏差与模式。
-3. 对齐季度 OKR，生成下月重点任务。
-4. 把结果写入季度 OKR 文件的 O1-O4 对应小节。
+## Workflow
 
-## 路径与时间规则
+1. Resolve the target month. Default to the current month. Honor an explicit month from the user.
+2. Locate the monthly planning file and the matching quarterly OKR file. Treat quarter file structure as authoritative and reuse its existing month-review style.
+3. Analyze month progress using the counting rules in the reference file. Prefer parent-task counts when parent tasks own child checkboxes. Use nested checkbox progress as supporting detail instead of double-counting.
+4. Map the month’s outputs and misses into the quarterly objectives using the reference mapping. Reuse the current quarter's O1-O4 headings exactly as written.
+5. Update in place:
+   - Append or patch the target month under each objective in the objective-first monthly review area, using the file's local month heading style such as `### 2月`.
+   - Append or patch the quarter-level summary block `# 🗓️ YYYY.MM 月度复盘与下月重点`.
+   - Do not create duplicate per-objective month headings or duplicate month-summary headings.
+6. If the target month is still in progress, say `统计截至 {Today}` in chat output and in the file where needed.
+7. Keep insight concise. Prefer one short summary paragraph plus 1-3 next-month actions for each objective over raw task narration.
 
-1. 默认复盘当前月份；若用户明确指定月份，按用户指定月份执行。
-2. 月度规划文件路径：`Plan/每日规划/{YYYY}/Q{Q}/{YYYY.MM}.md`。
-3. 季度 OKR 文件路径：`Plan/年度规划/{YYYY} OKR/{YYYY} 第{一|二|三|四}季度.md`。
-4. 严禁硬编码年份、季度或月份（例如 `2026`、`Q1`）。
+## Output
 
-## 数据源优先级
+- In chat, report work/personal progress, 3-6 milestones, 1-3 key patterns, and next-month focus by objective.
+- In file, preserve the local OKR wording and section names already used in the quarterly note.
 
-1. 默认以 Obsidian 文件为准（必须可执行）。
-2. 仅当用户明确要求且数据可访问时，额外参考 Notion。
-3. Notion 不可用时直接回退 Obsidian，不阻塞流程。
+## Guardrails
 
-## 解析规则（统一口径）
-
-1. 识别周标题（兼容 `～`/`~`、`第X周`、尾部备注）。
-2. 读取周区块与日区块中的任务项（工作/个人均计入）。
-3. 将每条 `- [ ]`、`- [x]`、`- [X]` 视为 1 个任务（含缩进子任务）。
-4. 任务含 `P0`/`P1` 则归类到对应优先级，否则归类为“未标注”。
-5. 识别延期/迁移模式：重复未完成、跨天迁移、连续拖延。
-6. 提炼里程碑时优先使用“已完成 + 可交付产出”的任务。
-
-## 自动执行流程（Workflow）
-
-1. 确认复盘月份（默认当前月，支持用户指定）。
-2. 读取月度文件，统计完成率、优先级分布、延期模式。
-3. 产出里程碑（3-6 条）与关键偏差（1-3 条）。
-4. 读取季度 OKR，完成 O1-O4 语义映射。
-5. 生成下月重点（每个 O 1-3 条，可验收）。
-6. 写入季度 OKR 文件（按 O1-O4 的 `### 月度复盘` 小节追加）。
-
-> 说明：不写回月度规划文件，仅写入季度 OKR 文件。
-
-## 输出规范
-
-### 1）对话窗口输出（Chat Output）
-
-在对话中输出如下结构：
-
-```markdown
-**🗓️ 月度复盘（{YYYY.MM}）**
-
-**进度总览**
-
-- 工作：[{BarWork}] {PctWork}%（{DoneWork}/{TotalWork}）（P0：{DoneP0Work}/{TotalP0Work}，P1：{DoneP1Work}/{TotalP1Work}）
-- 个人：[{BarLife}] {PctLife}%（{DoneLife}/{TotalLife}）（P0：{DoneP0Life}/{TotalP0Life}，P1：{DoneP1Life}/{TotalP1Life}）
-- 本月里程碑（最多 3–6 条）：
-  - …
-
-**模式与偏差（洞察优先）**
-
-- 关键正反馈（1–2 条）：…
-- 关键断点（1–3 条）：…
-- 最值得保留的节奏样本（1 条）：…
-
-**OKR 对齐（季度）**
-
-- **O1**：{本月总结 1 句}；{NextMonthName} 重点（1–3 条）：
-  - …
-- **O2**：{本月总结 1 句}；{NextMonthName} 重点（1–3 条）：
-  - …
-- **O3**：{本月总结 1 句}；{NextMonthName} 重点（1–3 条）：
-  - …
-- **O4**：{本月总结 1 句}；{NextMonthName} 重点（1–3 条）：
-  - …
-
-_已将“{M}月总结 + {NextMonthName} 重点”写入季度 OKR 文件（O1-O4 对应小节）。_
-```
-
-可选输出 1 行 Obsidian 引用（便于跳转季度文件）：
-
-```markdown
-![[{QuarterOKRFileName}]]
-```
-
-其中 `{QuarterOKRFileName}` 示例：`2026 第一季度`。
-
-### 2）季度 OKR 文件写入规范（File Update）
-
-1. 定位季度 OKR 文件：`Plan/年度规划/{YYYY} OKR/{YYYY} 第{一|二|三|四}季度.md`。
-2. 依次找到 `## O1：…`、`## O2：…`、`## O3：…`、`## O4：…` 四个 O 标题（与 OKR 原文一致）。
-3. 在每个 O 下面确保存在一个固定小节标题：`### 月度复盘`（若不存在则创建，放在该 O 的 KR 列表之后、下一条 `## O*` 之前）。
-4. 将当月复盘写入到对应 O 的 `### 月度复盘` 下面，按月追加，月份标题用粗体：`**{M}月**`。
-
-写入模板（每个 O 一段，保持与你给的示例一致：先叙述总结，再列“下月重点”）：
-
-```markdown
-### 月度复盘
-
-**{M}月**
-
-{本月总结（1-4 句，优先写里程碑与偏差；没进展就写“没有进展”并说明原因/状态）}
-
-{NextMonthName} 重点内容（最多 1–3 条）：
-
-- {重点 1（可验收，尽量和该 O 的 KR 对齐）}
-- {重点 2（可选）}
-- {重点 3（可选）}
-```
-
-**一致性要求**：
-
-- `**{M}月**` 只写月份（例如 `**1月**`），不写 `YYYY.MM`，便于季度内纵向对比。
-- 每条“下月重点”必须可验收，避免“继续努力”这类表述。
-- 若本月无进展，也必须写下月重点（相当于“重新承诺”）。
-- 如复盘月份尚未结束，说明“统计截至 {Today}”。
-
-**进度条生成规则（统一口径）**：
-
-- 用 10 格进度条表示完成率：`[▓▓▓▓▓▓░░░░]`。
-- 填充格数 = `round(完成率 × 10)`（四舍五入），其余为 `░`。
-- 完成率百分比保留整数（例如 60%）。
-
-## 注意事项
-
-- 洞察优先，不输出任务流水账。
-- 保持 `P0/P1/未标注` 分类口径一致。
-- 所有标点使用中文标点。
-- 必须写入季度 OKR 文件，不写回月度规划文件。
-- 若季度文件缺失 O1-O4 结构，先在对话中提示风险，再按现有结构尽力追加并标注“结构不完整”。
+- Write to the quarterly OKR file, not to `2026 全年规划.md`.
+- Treat the objective-first monthly review area as the primary write target when it exists.
+- Support objective headings that are not exact bare `## O1：...` strings, such as emoji-prefixed headings.
+- Ignore malformed checklist lines and explanatory bullets without checkboxes.
+- If the quarterly OKR file is missing one of the expected objective sections, note the risk and update the existing structure as far as possible without inventing a new OKR taxonomy.
