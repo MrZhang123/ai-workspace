@@ -12,15 +12,20 @@ Read [references/obsidian-daily-patterns.md](references/obsidian-daily-patterns.
 ## Workflow
 
 1. Resolve the target day. Default to reviewing today and planning tomorrow. Honor explicit dates from the user.
-2. Find candidate month files for the target day and its week. Inspect adjacent months when the week crosses month boundaries. Prefer the file that already contains the target week heading or target day heading.
+2. Find candidate month files for the target day and its week. Read the target month file with:
+   ```bash
+   obsidian read path="Plan/每日规划/{YYYY}/Q{Q}/{YYYY.MM}.md"
+   ```
+   Inspect adjacent months when the week crosses month boundaries. If the exact path is uncertain, use `obsidian search query="{MM.DD}"` to locate the right file. Prefer the file that already contains the target week heading or target day heading.
 3. Detect the local style from the nearest completed day blocks in the same week. Reuse heading depth, section names, and block layout before falling back to a default template.
 4. Update in place:
    - If the target day heading already exists, fill only missing sections or obviously empty placeholders.
    - If the target day heading exists but is empty, complete that block instead of creating a new heading.
    - If the day block already contains a review section, preserve the existing name and structure.
-5. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when a task owns child checkboxes. Use child completion as supporting detail instead of double-counting.
-6. Write tomorrow's plan with carry-over P0 items first, then add at most 1-2 new tasks that align with the current week.
-7. Leave reflective answers blank unless the note already contains objective facts written by the user.
+   - For appending a new day block, use `obsidian append path="..." content="..." silent`. For patching existing sections, use the Edit tool directly on the vault file.
+6. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when a task owns child checkboxes. Use child completion as supporting detail instead of double-counting.
+7. Write tomorrow's plan with carry-over P0 items first, then add at most 1-2 new tasks that align with the current week.
+8. Leave reflective answers blank unless the note already contains objective facts written by the user.
 
 ## Output
 
@@ -29,6 +34,7 @@ Read [references/obsidian-daily-patterns.md](references/obsidian-daily-patterns.
 
 ## Guardrails
 
+- If Obsidian is not running, fall back to reading vault files directly with the Read tool.
 - Treat day-level requests only. A pure “本周进度怎么样” request belongs to `weekly-review` unless the user also asks for tomorrow planning.
 - Keep the edit inside the current week block.
 - Ignore malformed checklist lines and explanatory bullets without checkboxes.
