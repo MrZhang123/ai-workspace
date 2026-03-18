@@ -22,7 +22,8 @@ Read [references/obsidian-daily-patterns.md](references/obsidian-daily-patterns.
    - If the target day heading already exists, fill only missing sections or obviously empty placeholders.
    - If the target day heading exists but is empty, complete that block instead of creating a new heading.
    - If the day block already contains a review section, preserve the existing name and structure.
-   - For appending a new day block, use `obsidian append path="..." content="..." silent`. For patching existing sections, use the Edit tool directly on the vault file.
+   - **Day block order is newest-first**: when inserting a new day block, place it directly after the week-level overview sections (`## 工作` / `## 个人`), before any existing day headings. Never append after older blocks.
+   - For patching existing sections, use the Edit tool directly on the vault file.
 6. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when a task owns child checkboxes. Use child completion as supporting detail instead of double-counting.
 7. Write tomorrow's plan with carry-over P0 items first, then add at most 1-2 new tasks that align with the current week.
 8. Leave reflective answers blank unless the note already contains objective facts written by the user.

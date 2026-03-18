@@ -77,6 +77,24 @@ Prefer the dominant naming used in the same file and nearby days.
 - If the week's recent days use the compact layout, keep using it for consistency.
 - If no local precedent exists, fall back to Variant A.
 
+### Day Block Ordering (CRITICAL)
+
+Day blocks within a week are ordered **newest first** (descending). The most recent date always appears immediately after the week-level overview (`## 工作` / `## 个人` sections), with older dates below.
+
+```
+# 03.16～03.22 第三周
+## 工作
+...
+## 个人
+...
+
+## 03.18 周三   ← newest, immediately after the week overview
+## 03.17 周二
+## 03.16 周一   ← oldest at the bottom
+```
+
+When inserting a new day block, **always place it directly after the week overview, before any existing day headings**. Never append it after older day blocks.
+
 ## 4. Counting Rules
 
 - Count parent tasks as the primary unit for completion metrics.
