@@ -29,24 +29,6 @@
 | **defuddle** | 从网页提取干净的 Markdown 内容，去除导航和杂乱元素，节省 token |
 | **skill-creator** | 创建、修改和优化 Skills，支持 eval 测试和性能基准分析 |
 
-## 目录结构
-
-```
-ai-workspace/
-├── skills/                # 所有 Skills
-│   ├── daily-review/      # 每日复盘
-│   ├── weekly-review/     # 周复盘
-│   ├── month-review/      # 月度复盘
-│   ├── obsidian-cli/      # Obsidian CLI 交互
-│   ├── obsidian-markdown/ # Obsidian Markdown 语法
-│   ├── obsidian-bases/    # Obsidian Bases
-│   ├── json-canvas/       # JSON Canvas
-│   ├── mind-recorder/     # 想法记录
-│   ├── defuddle/          # 网页内容提取
-│   └── skill-creator/     # Skill 开发工具
-└── log/                   # 运行日志
-```
-
 ## 使用方式
 
 Skills 通过 Claude Code 的 skill 机制加载，放置在对应工具的 skills 目录下即可自动识别。
