@@ -60,6 +60,31 @@ Observed in March.
 ### 今日全天回顾
 ```
 
+### Variant C: Minimal plan, no review
+
+Observed for weekends and days with only personal tasks. Flatter heading structure, no `### 今日规划` or `#### 今天的 Top Goal` wrappers, no review section.
+
+```markdown
+## 03.21 周六
+
+> 一句话引言
+
+### 个人
+- [ ] P0: ...
+- [ ] P1: ...
+
+### 备注
+- ...
+```
+
+Key differences from Variant A/B:
+- Quote block directly after the day heading (no `### 今日规划`)
+- Sections use `###` (h3) directly: `### 工作`, `### 个人`, `### 备注`
+- No `#### 今天的 Top Goal 是什么？` wrapper
+- No review section — used when the user explicitly says no review is needed, or for weekend/light days
+
+**Only use Variant C on weekends (Saturday/Sunday).** Weekdays (Monday–Friday) must use Variant A or B with full plan structure and review section.
+
 ### Review Section Names
 
 The notes already contain all of these names:
