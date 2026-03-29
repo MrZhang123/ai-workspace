@@ -10,11 +10,11 @@ Use this reference when writing a monthly review into the quarterly OKR note und
 
 ## 2. Observed Quarterly OKR Structure
 
-The current quarter note contains two month-review layers. The objective-first layer is now the primary write target.
+The quarter note uses an objective-first monthly review area as the sole write target.
 
-### Layer A: Objective-first monthly review area
+### Objective-first monthly review area
 
-In the latest `2026 第一季度.md`, the quarter note repeats the objective headings after the month overview block and writes each month directly under that repeated objective heading:
+In the quarterly OKR note, each objective heading is repeated in a lower summary section, and each month is written directly under that repeated objective heading:
 
 ```markdown
 ## O1：...
@@ -37,28 +37,76 @@ Important implications:
 - Empty placeholders such as `### 2月` may already exist. Fill them instead of creating duplicates.
 - Reuse the repeated objective headings in this lower review area rather than writing under the top KR definition area.
 
-### Layer B: Quarter-level month summary
+### Quarter-end summary (季末总结)
 
-At the bottom of the quarter note there is a monthly overview block:
+When the target month is the last month of a quarter (3月/6月/9月/12月), the quarterly OKR note uses a two-part structure:
+
+1. **整体评价**（`# 🏖️ 整体评价`）：全局总览，放在分项回顾之前
+2. **分项回顾**（`# 📋 分项回顾`）：各 Objective 的逐月记录
+
+#### 整体评价结构
 
 ```markdown
-# 🗓️ 2026.01 月度复盘与下月重点
+# 🏖️ 整体评价
 
-## 进度总览（事实）
-- 工作：...
-- 个人：...
+## 各 Objective 达成度
 
-## 本月里程碑（最多 3–6 条）
+评分准则：🔴 0~0.3 / 🟡 0.4~0.6 / 🟢 0.7~1.0
+
+| Objective | 达成度 | 评分 | 评价 |
+|---|---|---|---|
+| O1：{短标题} | ★★★★☆ | 🟢 0.75 | {一句话，点明哪些 KR 达标/未达标} |
+| O2：... | ... | ... | ... |
+
+## Q{N} 核心产出
+
+**工作侧（O1）：**
 - ...
 
-## 模式与偏差（洞察）
+**个人侧（O2~O4）：**
 - ...
 
-## 下月重点（2 月）
-详见各 Objective 下的「### 月度复盘」模块（每个 O 给出 1–3 条可验收重点）。
+## 做得好的
+
+- ...
+
+## 存在的问题
+
+> [!warning]
+> 1. **{问题名}**：{描述}
+> 2. ...
+
+## 下个季度需要解决的核心问题
+
+> [!tip]
+> - {可执行的行动}
+> - ...
 ```
 
-Update both layers for the target month, but prioritize Layer A as the main review output.
+注意事项：
+- 「存在的问题」用 `> [!warning]` callout 突出显示
+- 「下个季度需要解决的核心问题」用 `> [!tip]` callout 突出显示
+- 「做得好的」和「存在的问题」不要内容重复；前者讲正反馈，后者讲结构性问题
+- 不需要单独的「做的不好的」节，「存在的问题」已覆盖
+
+#### 📋 分项回顾结构
+
+```markdown
+# 📋 分项回顾
+
+## O1：...
+
+### 1月
+{总结段落}
+
+2月重点内容（最多 1–3 条）：
+- ...
+
+### 3月
+{总结段落}
+```
+
+评分准则：🔴 0~0.3（严重不足）/ 🟡 0.4~0.6（部分达标）/ 🟢 0.7~1.0（基本达标或超预期）。根据各 KR 实际完成情况给出 0~1.0 的分数。
 
 ## 3. Objective Mapping
 
@@ -75,11 +123,9 @@ If one task could map to multiple objectives, choose the dominant intent and avo
 
 - If the target month already exists under the repeated objective heading, patch that month instead of appending a second `### {M}月`.
 - If the file already contains an empty month placeholder such as `### 2月`, fill that placeholder in place.
-- If the target month already has a quarter-level summary block, patch that block instead of creating a second `# 🗓️ YYYY.MM 月度复盘与下月重点`.
 - Keep per-objective month markers in the file's local style. In the current file that means `### {M}月`.
-- Keep the quarter-level summary heading as `# 🗓️ YYYY.MM 月度复盘与下月重点`.
-- Keep `下月重点` in the overview block short and point back to the objective sections when the detail already lives there.
 - Do not write monthly review content into the top KR definition area near the beginning of the file.
+- For quarter-end months, write the `# 🏖️ 整体评价` section before `# 📋 分项回顾`. If either section already exists, patch it in place instead of creating duplicates.
 
 ## 5. Counting Rules
 

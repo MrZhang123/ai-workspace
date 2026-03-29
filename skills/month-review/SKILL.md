@@ -28,8 +28,9 @@ Read [references/okr-month-review-patterns.md](references/okr-month-review-patte
    - If appending a new month section under an objective, use `obsidian append path="..." content="..." silent`.
    - If patching an existing month placeholder or summary block, use the Edit tool directly on the vault file.
    - Do not create duplicate per-objective month headings or duplicate month-summary headings.
-6. If the target month is still in progress, say `统计截至 {Today}` in chat output and in the file where needed.
-7. Keep insight concise. Prefer one short summary paragraph plus 1-3 next-month actions for each objective over raw task narration.
+6. For quarter-end months (3月/6月/9月/12月), also generate the `# 🏖️ 整体评价` section (达成度 table, core outputs, highlights, problems with `[!warning]` callout, next-quarter focus with `[!tip]` callout) and place it before the `# 📋 分项回顾` section. See the reference file for the exact template and callout usage.
+7. If the target month is still in progress, say `统计截至 {Today}` in chat output and in the file where needed.
+8. Keep insight concise. Prefer one short summary paragraph plus 1-3 next-month actions for each objective over raw task narration.
 
 ## Output
 
