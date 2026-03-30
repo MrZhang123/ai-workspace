@@ -87,13 +87,59 @@ Key differences from Variant A/B:
 
 ### Review Section Names
 
-The notes already contain all of these names:
+The notes contain these names across different periods:
 
-- `### 昨日回顾`
-- `### 今日回顾`
-- `### 今日全天回顾`
+- `### 昨日回顾` (early 2026)
+- `### 今日全天回顾` (January–March 2026, legacy format)
+- `### 今日回顾` (April 2026 onward, current format)
 
-Prefer the dominant naming used in the same file and nearby days.
+**From April 2026 onward, use `### 今日回顾` with the compact review format (see Variant D below).**
+
+For files before April 2026, preserve the existing review section name when editing.
+
+### Variant D: Compact review (April 2026 onward)
+
+Replaces the old multi-heading review format. Designed for 30-second completion at night.
+
+```markdown
+### 今日回顾
+
+- 达成：工作 ○○○ | 个人 ○○○○
+- 卡点（1 句话）：
+- 精力（上午/下午/晚上）：
+- 作息：
+- 健身：
+- 明早第一件事：
+```
+
+Filled example:
+
+```markdown
+### 今日回顾
+
+- 达成：工作 ●●○ | 个人 ●○○○
+- 卡点（1 句话）：下班后太累，英语没启动
+- 精力（上午/下午/晚上）：好/一般/差
+- 作息：22:30 睡 / 7:00 起
+- 健身：有氧 30min
+- 明早第一件事：7:00 起，读 30min 致股东信
+```
+
+Field guide:
+- **达成**: one ● or ○ per parent task in the plan section. ● = done, ○ = not done. Separated into 工作 and 个人. Count the plan's parent-level checkboxes to determine how many circles to generate.
+- **卡点**: one sentence describing the main blocker, or `无` if smooth. Feeds into weekly review diagnostics.
+- **精力**: three slots, each `好`/`一般`/`差`. Accumulates into weekly energy pattern analysis.
+- **作息**: actual sleep and wake times. Core tracking data for the Q2 schedule adjustment goal.
+- **健身**: free-form (e.g., `有氧 30min` or `否`)
+- **明早第一件事**: tomorrow's first personal action, decided tonight to reduce morning activation cost. This is the most important field.
+
+Field guide:
+- **工作/个人**: completed/total parent task counts (e.g., `2/3`)
+- **卡点**: one sentence describing the main blocker, or `无` if smooth. Feeds into weekly review diagnostics.
+- **精力**: three slots, each `好`/`一般`/`差`. Accumulates into weekly energy pattern analysis.
+- **作息**: actual sleep and wake times. Core tracking data for the Q2 schedule adjustment goal.
+- **健身**: free-form (e.g., `有氧 30min` or `否`)
+- **明早第一件事**: tomorrow's first personal action, decided tonight to reduce morning activation cost. This is the most important field.
 
 ## 3. Update Rules
 
@@ -134,4 +180,6 @@ When inserting a new day block, **always place it directly after the week overvi
 - Write tomorrow planning tasks and blank review placeholders.
 - Carry over unfinished `P0` items first.
 - Limit new tasks. Prefer 1-2 new tasks with clear closure over a long list.
-- Keep subjective fields blank unless the user already wrote objective facts that can be safely preserved.
+- Keep subjective fields blank unless the note already contains objective facts written by the user.
+- For the compact review (Variant D), pre-fill `工作` and `个人` counts if completion data is available. Leave all other fields blank for the user to fill.
+- Never pre-fill `卡点`, `精力`, `作息`, or `明早第一件事` — these are subjective and must come from the user.

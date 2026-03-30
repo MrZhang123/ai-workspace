@@ -27,11 +27,12 @@ Read [references/obsidian-daily-patterns.md](references/obsidian-daily-patterns.
 6. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when a task owns child checkboxes. Use child completion as supporting detail instead of double-counting.
 7. Write tomorrow's plan with carry-over P0 items first, then add at most 1-2 new tasks that align with the current week.
 8. Leave reflective answers blank unless the note already contains objective facts written by the user.
+9. For files from April 2026 onward, use the compact review format (Variant D in the reference file). All fields (`卡点`, `精力`, `作息`, `健身`, `明早第一件事`) are left blank for the user — task completion is already tracked by checkboxes in the plan section. For files before April 2026, preserve the existing review format.
 
 ## Output
 
 - In chat, report done/todo counts, the most important carry-over risk, and 2-3 concrete suggestions.
-- In file, preserve the local wording. Prefer the file's dominant section names such as `今日回顾`, `今日全天回顾`, or `昨日回顾`.
+- In file, for April 2026 onward use `### 今日回顾` with the compact format (Variant D). For older files, preserve the existing section names such as `今日全天回顾` or `昨日回顾`.
 
 ## Guardrails
 
