@@ -93,19 +93,22 @@ The notes contain these names across different periods:
 - `### 今日全天回顾` (January–March 2026, legacy format)
 - `### 今日回顾` (April 2026 onward, current format)
 
-**From April 2026 onward, use `### 今日回顾` with the compact review format (see Variant D below).**
+**From April 2026 onward, use `### 今日回顾` with the concise review format (see Variant D below).**
 
 For files before April 2026, preserve the existing review section name when editing.
 
-### Variant D: Compact review (April 2026 onward)
+### Variant D: Concise review (April 2026 onward)
 
-Replaces the old multi-heading review format. Designed for 30-second completion at night.
+Replaces the old multi-heading review format. Designed for a 1-2 minute review that remains easy to fill but still contains enough detail for weekly and monthly review.
 
 ```markdown
 ### 今日回顾
 
 - 达成：工作 ○○○ | 个人 ○○○○
-- 卡点（1 句话）：
+- 今日完成：
+- 未完成：
+- 原因判断：
+- 明日调整：
 - 精力（上午/下午/晚上）：
 - 作息：
 - 健身：
@@ -118,28 +121,26 @@ Filled example:
 ### 今日回顾
 
 - 达成：工作 ●●○ | 个人 ●○○○
-- 卡点（1 句话）：下班后太累，英语没启动
+- 今日完成：完成荣誉体系页面主流程和分享材料大纲。
+- 未完成：荣誉体系联调和财务数据方案仍未推进。
+- 原因判断：下午会议占用较多时间，个人项安排偏多。
+- 明日调整：上午先处理荣誉体系联调；个人侧只保留财务数据方案的 30min 对比记录。
 - 精力（上午/下午/晚上）：好/一般/差
-- 作息：22:30 睡 / 7:00 起
+- 作息：23:30 睡 / 7:00 起
 - 健身：有氧 30min
 - 明早第一件事：7:00 起，读 30min 致股东信
 ```
 
 Field guide:
-- **达成**: one ● or ○ per parent task in the plan section. ● = done, ○ = not done. Separated into 工作 and 个人. Count the plan's parent-level checkboxes to determine how many circles to generate.
-- **卡点**: one sentence describing the main blocker, or `无` if smooth. Feeds into weekly review diagnostics.
+- **达成**: one ● or ○ per parent task in the plan section. ● = done, ○ = not done. Separated into 工作 and 个人. Count the plan's parent-level checkboxes to determine how many circles to generate. Partly completed parent tasks still count as ○; mention real progress in `今日完成`.
+- **今日完成**: factual outputs and visible progress from checked parent tasks, checked child tasks, or explicit notes. Keep it concrete and avoid overclaiming.
+- **未完成**: unfinished parent tasks and important unfinished child tasks, especially P0 items. This should make tomorrow's carry-over clear.
+- **原因判断**: one short cause statement. Draft only when the cause is visible in the file, such as external blockers, a P0 crowding out lower-priority work, a task being too large, or explicit notes. Leave blank if the likely cause is internal or not recorded.
+- **明日调整**: one concrete adjustment for tomorrow's plan. Prefer carrying over unfinished P0 items first, then reducing or splitting lower-priority work.
 - **精力**: three slots, each `好`/`一般`/`差`. Accumulates into weekly energy pattern analysis.
 - **作息**: actual sleep and wake times. Core tracking data for the Q2 schedule adjustment goal.
 - **健身**: free-form (e.g., `有氧 30min` or `否`)
-- **明早第一件事**: tomorrow's first personal action, decided tonight to reduce morning activation cost. This is the most important field.
-
-Field guide:
-- **工作/个人**: completed/total parent task counts (e.g., `2/3`)
-- **卡点**: one sentence describing the main blocker, or `无` if smooth. Feeds into weekly review diagnostics.
-- **精力**: three slots, each `好`/`一般`/`差`. Accumulates into weekly energy pattern analysis.
-- **作息**: actual sleep and wake times. Core tracking data for the Q2 schedule adjustment goal.
-- **健身**: free-form (e.g., `有氧 30min` or `否`)
-- **明早第一件事**: tomorrow's first personal action, decided tonight to reduce morning activation cost. This is the most important field.
+- **明早第一件事**: tomorrow's first concrete action, preferably taken from tomorrow's P0 plan or scheduled event. It should be small enough to start immediately.
 
 ## 3. Update Rules
 
@@ -177,9 +178,26 @@ When inserting a new day block, **always place it directly after the week overvi
 
 ## 5. What to Write
 
-- Write tomorrow planning tasks and blank review placeholders.
+- Write tomorrow planning tasks based on carry-over P0 items and week priorities.
 - Carry over unfinished `P0` items first.
 - Limit new tasks. Prefer 1-2 new tasks with clear closure over a long list.
-- Keep subjective fields blank unless the note already contains objective facts written by the user.
-- For the compact review (Variant D), pre-fill `工作` and `个人` counts if completion data is available. Leave all other fields blank for the user to fill.
-- Never pre-fill `卡点`, `精力`, `作息`, or `明早第一件事` — these are subjective and must come from the user.
+
+### Review field policy (Variant D, April 2026 onward)
+
+Draft fields the AI can justify from objective sources in the file; leave subjective fields blank.
+
+| Field | AI drafts? | Condition |
+|-------|------------|-----------|
+| `达成` | Yes | Count parent checkboxes in the day's plan section. Purely mechanical. |
+| `今日完成` | Yes | Use checked parent tasks, checked child tasks, and explicit notes. Mention partial progress without marking the parent task complete. |
+| `未完成` | Yes | Use unchecked parent tasks and important unchecked child tasks, especially P0 items. |
+| `原因判断` | Yes (cautious draft) | Only when the cause is visible in the plan section or notes, e.g. external blocker, task too large, P0 crowding out lower-priority work, multi-day carry-over. Leave blank if the likely cause is emotional, internal, or otherwise not visible in the file. |
+| `明日调整` | Yes | Base it on unfinished P0 items and tomorrow's existing plan. Prefer a small concrete adjustment over adding new tasks. |
+| `明早第一件事` | Yes | Use tomorrow's scheduled event or first P0 action. Never invent a task unrelated to the plan. |
+| `精力（上午/下午/晚上）` | **No** | Subjective. Must come from the user. |
+| `作息` | **No** | Actual sleep and wake times. Must come from the user. |
+| `健身` | **No** | Actual exercise form and duration. Must come from the user. |
+
+**Empty beats fabricated.** For subjective fields (精力 / 作息 / 健身 and any internal-state cause), leaving blank is always preferable to guessing. These fields are the only feedback-loop data for the user's Q2 energy strategy, and fabricated values permanently corrupt downstream weekly and monthly review analysis. When in doubt, leave blank; the user can fill them manually.
+
+When the AI drafts `原因判断`, the draft must rest on file-visible facts only: which parent tasks were incomplete, how many days they have been carried over, whether a P0 pushed out a P1, whether a task was explicitly noted as skipped in 备注. If the likely cause is something the file cannot show (mood, unplanned meetings, distraction), leave the field blank rather than guess.
