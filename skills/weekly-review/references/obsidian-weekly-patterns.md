@@ -77,31 +77,52 @@ Do not copy the whole monthly pool into one week. Select a realistic subset, pre
 
 Prioritize:
 
-- 1-3 milestone-style outputs, not a raw task dump
+- A scored progress assessment with brief anchors. When evidence supports it, include work-side score, personal-side score, and trend versus the prior week.
+- 1-3 milestone-style outputs, not a raw task dump. Split real deliverables from input or learning when both exist.
 - 1-2 factual bottlenecks
+- Specific carry-over judgment: classify repeated unfinished items one by one instead of saying only "continue next week".
 - a compact review structure that is quick to scan on revisit
-- 2-3 next-step priorities with clear triggers or minimal closure
+- 2-3 next-step priorities with clear triggers or minimal closure. Prefer 1-2 main P0 focuses and put the rest into light parallel work or deferral.
+- concise week plans with parent tasks; avoid nested step lists unless the detail is a real deadline, deliverable, or constraint
+
+Priority and evidence rules:
+
+- Preserve source priority labels. Do not turn a P1 item into P0 unless the user explicitly promoted it or the week plan already says so.
+- Suggested downgrades should be written as recommendations, not as completed decisions.
+- Call out day-record gaps or week-after completion marks when they affect evidence quality.
+- Account for fixed constraints such as leave, travel, appointments, shareholder meetings, health treatment, passport pickup, or account setup before estimating capacity.
 
 If no local weekly review style exists yet, use this fallback:
 
 ```markdown
 ## 本周总结
 
-### 进度评估
+### 评分与进度
 - 评分（1-10）：
-- 核心产出：
+	- 工作侧：
+	- 个人侧：
+	- 综合判断：
+- 父任务完成情况：
 
 ### 一句话总结
-- 
+- 待填写
+
+### 核心产出
+- 已形成输出：
+- 已完成输入：
 
 ### 关键观察
-- 
+- 待填写
 
-### 特别注意的事情
-- 
+### 顺延项判断
+- 待填写
 
-### 接下来特别需要推进的事项
-- P0：
-- P1：
-- 可延后：
+### 下周安排
+- 本周主攻：
+- 必须处理的固定事项：
+- 轻量并行：
+- 明确延后：
+
+### 特别注意
+- 待填写
 ```

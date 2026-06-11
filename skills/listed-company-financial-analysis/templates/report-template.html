@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{REPORT_TITLE}}</title>
+  <style>
+    :root {
+      --ink: #15202b;
+      --muted: #657786;
+      --line: #d8dee4;
+      --bg: #f7f9fb;
+      --panel: #ffffff;
+      --blue: #2563eb;
+      --green: #15803d;
+      --red: #b91c1c;
+      --orange: #c2410c;
+      --gray: #475569;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 56px; }
+    header {
+      padding: 28px 0 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+    h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.18; letter-spacing: 0; }
+    h2 { margin: 30px 0 14px; font-size: 22px; letter-spacing: 0; }
+    h3 { margin: 18px 0 10px; font-size: 17px; letter-spacing: 0; }
+    p { margin: 8px 0; }
+    .lead { color: var(--muted); font-size: 16px; max-width: 920px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-width: 0;
+    }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .metric-label { color: var(--muted); font-size: 13px; }
+    .metric-value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+    .metric-note { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 650;
+      border: 1px solid transparent;
+    }
+    .tag-green { color: var(--green); background: #dcfce7; border-color: #bbf7d0; }
+    .tag-red { color: var(--red); background: #fee2e2; border-color: #fecaca; }
+    .tag-orange { color: var(--orange); background: #ffedd5; border-color: #fed7aa; }
+    .tag-blue { color: var(--blue); background: #dbeafe; border-color: #bfdbfe; }
+    .tag-gray { color: var(--gray); background: #f1f5f9; border-color: #e2e8f0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--panel); }
+    .table-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-scroll table { min-width: 860px; }
+    .table-scroll th, .table-scroll td { white-space: nowrap; }
+    .card:has(table) {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .card:has(table) table { min-width: 860px; }
+    .card:has(table) th, .card:has(table) td { white-space: nowrap; }
+    th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { text-align: left; color: #334155; background: #f1f5f9; font-weight: 650; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .note {
+      border-left: 4px solid var(--blue);
+      background: #eff6ff;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .warn {
+      border-left: 4px solid var(--orange);
+      background: #fff7ed;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .danger {
+      border-left: 4px solid var(--red);
+      background: #fef2f2;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    svg { max-width: 100%; }
+    .chart { width: 100%; height: 260px; display: block; overflow: hidden; }
+    .bar-label { font-size: 12px; fill: #334155; }
+    .axis { stroke: #cbd5e1; stroke-width: 1; }
+    .footer { color: var(--muted); font-size: 13px; margin-top: 28px; }
+    @media (max-width: 820px) {
+      .span-3, .span-4, .span-6, .span-8 { grid-column: span 12; }
+      h1 { font-size: 27px; }
+      .metric-value { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>{{REPORT_TITLE}}</h1>
+      <p class="lead">{{REPORT_SUBTITLE}}</p>
+    </header>
+
+    <section>
+      <h2>先看结论</h2>
+      <div class="grid">
+        <div class="card span-3">
+          <div class="metric-label">当前判断</div>
+          <div class="metric-value">{{JUDGMENT}}</div>
+          <div class="metric-note">数据置信度：{{DATA_CONFIDENCE}}</div>
+        </div>
+        <div class="card span-3">
+          <div class="metric-label">合理估值区间</div>
+          <div class="metric-value">{{VALUE_RANGE}}</div>
+          <div class="metric-note">{{VALUATION_METHOD}}</div>
+        </div>
+        <div class="card span-3">
+          <div class="metric-label">当前价格</div>
+          <div class="metric-value">{{CURRENT_PRICE}}</div>
+          <div class="metric-note">{{QUOTE_DATE}}</div>
+        </div>
+        <div class="card span-3">
+          <div class="metric-label">安全边际价格</div>
+          <div class="metric-value">{{MARGIN_PRICE}}</div>
+          <div class="metric-note">{{MARGIN_NOTE}}</div>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <div class="card span-6">
+          <h3>主要依据</h3>
+          <ul>
+            <li>{{BULL_POINT_1}}</li>
+            <li>{{BULL_POINT_2}}</li>
+            <li>{{BULL_POINT_3}}</li>
+          </ul>
+        </div>
+        <div class="card span-6">
+          <h3>主要风险</h3>
+          <ul>
+            <li>{{RISK_POINT_1}}</li>
+            <li>{{RISK_POINT_2}}</li>
+            <li>{{RISK_POINT_3}}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>财务趋势</h2>
+      <div class="grid">
+        <div class="card span-6">
+          <h3>收入和利润</h3>
+          <svg class="chart" id="revenue-profit-chart" viewBox="0 0 640 260" role="img" aria-label="收入和利润趋势"></svg>
+        </div>
+        <div class="card span-6">
+          <h3>现金流</h3>
+          <svg class="chart" id="cashflow-chart" viewBox="0 0 640 260" role="img" aria-label="现金流趋势"></svg>
+        </div>
+        <div class="card span-12">
+          <h3>核心指标</h3>
+          {{CORE_METRICS_TABLE}}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>业务与竞争</h2>
+      <div class="grid">
+        <div class="card span-6">
+          <h3>商业模式</h3>
+          <p>{{BUSINESS_MODEL}}</p>
+        </div>
+        <div class="card span-6">
+          <h3>护城河验证</h3>
+          <p>{{MOAT_ASSESSMENT}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>财务质量</h2>
+      <div class="grid">
+        <div class="card span-6">
+          <h3>现金流和偿债能力</h3>
+          {{HEALTH_TABLE}}
+        </div>
+        <div class="card span-6">
+          <h3>自动预警</h3>
+          {{RED_FLAGS_TABLE}}
+        </div>
+      </div>
+      <div class="note">
+        {{CALCULATION_NOTE}}
+      </div>
+    </section>
+
+    <section>
+      <h2>空头情形</h2>
+      <div class="danger">
+        {{NEGATIVE_CASE_SUMMARY}}
+      </div>
+      <div class="grid">
+        <div class="card span-8">
+          <h3>反方论点和验证指标</h3>
+          {{NEGATIVE_CASE_TABLE}}
+        </div>
+        <div class="card span-4">
+          <h3>市场做空数据</h3>
+          <p>{{SHORT_SELLING_NOTE}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>估值</h2>
+      <div class="grid">
+        <div class="card span-8">
+          <h3>当前价格与估值区间</h3>
+          <svg class="chart" id="valuation-chart" viewBox="0 0 760 260" role="img" aria-label="估值区间"></svg>
+        </div>
+        <div class="card span-4">
+          <h3>估值说明</h3>
+          <p>{{VALUATION_EXPLANATION}}</p>
+        </div>
+        <div class="card span-12">
+          <h3>DCF 或估值敏感性</h3>
+          {{DCF_TABLE}}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>后续跟踪清单</h2>
+      {{TRACKING_TABLE}}
+    </section>
+
+    <section>
+      <h2>口径和资料来源</h2>
+      <div class="note">
+        {{CURRENCY_NOTE}}
+      </div>
+      {{SOURCE_TABLE}}
+      <div class="footer">
+        本报告仅用于研究和讨论，不构成投资建议。市场价格和公司基本面会变化，使用前应重新核对最新公告、股价和关键假设。
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const chartData = {{CHART_DATA_JSON}};
+
+    function drawGroupedBars(svgId, labels, series) {
+      const svg = document.getElementById(svgId);
+      if (!svg || !labels || !series) return;
+      const width = 640, height = 260, pad = 42;
+      const values = series.flatMap(s => s.data).filter(v => typeof v === "number");
+      const max = Math.max(0, ...values);
+      const min = Math.min(0, ...values);
+      const span = max - min || 1;
+      const zeroY = height - pad - ((0 - min) / span) * (height - pad * 2);
+      svg.innerHTML = "";
+      const axis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      axis.setAttribute("x1", pad);
+      axis.setAttribute("x2", width - pad);
+      axis.setAttribute("y1", zeroY);
+      axis.setAttribute("y2", zeroY);
+      axis.setAttribute("class", "axis");
+      svg.appendChild(axis);
+      const groupWidth = (width - pad * 2) / labels.length;
+      const barWidth = Math.max(8, groupWidth / (series.length + 1.6));
+      labels.forEach((label, i) => {
+        series.forEach((s, j) => {
+          const v = s.data[i] || 0;
+          const barHeight = Math.abs(v / span) * (height - pad * 2);
+          const x = pad + i * groupWidth + j * barWidth + groupWidth * 0.18;
+          const y = v >= 0 ? zeroY - barHeight : zeroY;
+          const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+          rect.setAttribute("x", x);
+          rect.setAttribute("y", y);
+          rect.setAttribute("width", barWidth - 2);
+          rect.setAttribute("height", barHeight);
+          rect.setAttribute("rx", "3");
+          rect.setAttribute("fill", s.color);
+          svg.appendChild(rect);
+        });
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", pad + i * groupWidth + groupWidth * 0.5);
+        text.setAttribute("y", height - 12);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("class", "bar-label");
+        text.textContent = label;
+        svg.appendChild(text);
+      });
+    }
+
+    function drawValuation(svgId, current, low, high) {
+      const svg = document.getElementById(svgId);
+      if (!svg) return;
+      const width = 760, height = 260, pad = 64;
+      const max = Math.max(current || 0, high || 0) * 1.18 || 1;
+      const x = value => pad + (value / max) * (width - pad * 2);
+      svg.innerHTML = "";
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", pad);
+      line.setAttribute("x2", width - pad);
+      line.setAttribute("y1", 130);
+      line.setAttribute("y2", 130);
+      line.setAttribute("class", "axis");
+      svg.appendChild(line);
+      const range = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      range.setAttribute("x", x(low));
+      range.setAttribute("y", 92);
+      range.setAttribute("width", Math.max(4, x(high) - x(low)));
+      range.setAttribute("height", 76);
+      range.setAttribute("rx", "8");
+      range.setAttribute("fill", "#bfdbfe");
+      svg.appendChild(range);
+      const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      dot.setAttribute("cx", x(current));
+      dot.setAttribute("cy", 130);
+      dot.setAttribute("r", "9");
+      dot.setAttribute("fill", "#b91c1c");
+      svg.appendChild(dot);
+      [
+        [low, "估值下沿"],
+        [high, "估值上沿"],
+        [current, "当前价格"]
+      ].forEach(([value, label]) => {
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", x(value));
+        text.setAttribute("y", label === "当前价格" ? 194 : 78);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("class", "bar-label");
+        text.textContent = `${label}: ${value}`;
+        svg.appendChild(text);
+      });
+    }
+
+    if (chartData) {
+      drawGroupedBars("revenue-profit-chart", chartData.labels, chartData.revenueProfitSeries);
+      drawGroupedBars("cashflow-chart", chartData.labels, chartData.cashflowSeries);
+      if (chartData.valuation) {
+        drawValuation("valuation-chart", chartData.valuation.current, chartData.valuation.low, chartData.valuation.high);
+      }
+    }
+  </script>
+</body>
+</html>

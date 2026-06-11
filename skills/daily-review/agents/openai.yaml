@@ -1,7 +1,7 @@
 interface:
   display_name: "Daily Review"
-  short_description: "补每日复盘与明日计划，继承现有笔记风格"
-  default_prompt: "Use $daily-review to summarize today and update tomorrow's planning block in my Obsidian monthly note."
+  short_description: "先看飞书日程，再补每日复盘与日规划"
+  default_prompt: "Use $daily-review to read my calendar, summarize today, and update today's or tomorrow's planning block in my Obsidian monthly note."
 
 policy:
   allow_implicit_invocation: true

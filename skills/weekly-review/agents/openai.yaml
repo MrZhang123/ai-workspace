@@ -1,7 +1,7 @@
 interface:
   display_name: "Weekly Review"
-  short_description: "按月度重点池补周复盘与下周计划"
-  default_prompt: "Use $weekly-review to summarize this week, read the month-level focus/candidate pool, and update the weekly review section in my Obsidian planning note."
+  short_description: "按月度重点池写带评分的周复盘与下周计划"
+  default_prompt: "Use $weekly-review to summarize this week with score anchors, carry-over judgment, and next-week priorities, then update the weekly review section in my Obsidian planning note."
 
 policy:
   allow_implicit_invocation: true

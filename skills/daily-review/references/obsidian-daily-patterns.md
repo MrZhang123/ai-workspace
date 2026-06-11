@@ -13,6 +13,10 @@ Use this reference when updating a day block in the monthly planning notes under
 
 The 2026 notes already use multiple day-block styles. Reuse the nearest local style instead of forcing one template.
 
+Planning style:
+- Plans are priority checklists, not timetables. Do not write task ranges like `09:00-10:00` unless the user explicitly asks for time-boxing.
+- Calendar events can be mentioned only when they constrain capacity. Keep them as brief context, not as a full schedule.
+
 ### Variant A: Full plan + full review
 
 Common in late January and much of February.
@@ -124,11 +128,11 @@ Filled example:
 - 今日完成：完成荣誉体系页面主流程和分享材料大纲。
 - 未完成：荣誉体系联调和财务数据方案仍未推进。
 - 原因判断：下午会议占用较多时间，个人项安排偏多。
-- 明日调整：上午先处理荣誉体系联调；个人侧只保留财务数据方案的 30min 对比记录。
+- 明日调整：明天先处理荣誉体系联调；个人侧只保留财务数据方案对比记录。
 - 精力（上午/下午/晚上）：好/一般/差
 - 作息：23:30 睡 / 7:00 起
 - 健身：有氧 30min
-- 明早第一件事：7:00 起，读 30min 致股东信
+- 明早第一件事：读致股东信
 ```
 
 Field guide:
@@ -181,6 +185,23 @@ When inserting a new day block, **always place it directly after the week overvi
 - Write tomorrow planning tasks based on carry-over P0 items and week priorities.
 - Carry over unfinished `P0` items first.
 - Limit new tasks. Prefer 1-2 new tasks with clear closure over a long list.
+
+## 6. Weekly checkbox sync
+
+When updating a daily review, also check whether the day's completed parent tasks should mark any current-week parent checklist items complete.
+
+Safe to update from `[ ]` to `[x]`:
+- The weekly item and a checked daily parent task are the same work item, with only priority/date wording differences.
+- The weekly item is a single deliverable, and the day's checked parent task or explicit notes show that deliverable is finished.
+- A weekly parent task has child checkboxes, and every required child item is checked or explicitly marked finished in the daily notes.
+
+Do not update the weekly checkbox:
+- The daily task is only a partial step toward the weekly task.
+- The weekly task has unchecked child items or visible remaining deliverables.
+- The match is based only on broad theme similarity, such as both mentioning the same project name.
+- The weekly item depends on review, merge, delivery, publication, or external confirmation that is not recorded as complete.
+
+When not updating because the match is uncertain, mention it in chat as a possible weekly/daily mismatch. Do not create new weekly tasks during daily review unless the user explicitly asks.
 
 ### Review field policy (Variant D, April 2026 onward)
 

@@ -36,6 +36,7 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
    - Default to a flat bullet-list format grouped by Objective. Avoid tables unless the user explicitly asks for them.
 6. **Analyze remaining time and output priority recommendations in chat:**
    - How many workdays / weekend days remain in the week.
+   - Account for fixed constraints such as leave days, travel, appointments, shareholder meetings, health treatment, or document/account errands before estimating capacity.
    - Add a dedicated `特别注意的事情` section:
      - Include carry-over items, blocking dependencies, KRs falling behind pace, and any mismatch between week-level planning and daily records that could distort completion judgment.
      - Keep it factual and concise so the user can immediately see what needs attention.
@@ -45,7 +46,9 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
    - **P0 (must do)**: items that are time-sensitive, blocking, or directly aligned with high-priority KRs.
    - **P1 (should push)**: items that advance KRs but are not urgent this week.
    - **Can defer**: items safe to push to next week with rationale.
+   - Preserve the source priority labels. Do not describe a P1 task as P0 unless the user explicitly promotes it or the current week plan already does so.
    - Call out risks: carry-over items, KRs falling behind pace, blockers.
+   - Keep next-week plans concise: prefer parent tasks and clear priorities; add subtasks only for concrete deliverables, deadlines, or known constraints. Default to 1-2 main P0 focuses for the week; move other items into light parallel work or deferral.
 7. If the week is still in progress, say `统计截至 {Today}` in chat output.
 8. **Wait for user confirmation before writing to the file.** The user may want to adjust priorities or add/remove items.
 
@@ -60,28 +63,35 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
 11. Analyze progress using the counting rules in the reference file. Prefer parent-task counts when parent tasks own child checkboxes.
 12. Produce a concise summary with milestones, risks, and next-step priorities. Prefer insight over task-by-task narration.
 13. For the file version, default to a compact structure unless the local note clearly uses a longer established style:
-   - `进度评估`
+   - `评分与进度`
    - `一句话总结`
+   - `核心产出`
    - `关键观察`
-   - `特别注意的事情`
-   - `接下来特别需要推进的事项`
+   - `顺延项判断`
+   - `下周安排`
+   - `特别注意`
    Collapse repetitive sections such as `节奏与状态` / `主要问题（事实层）` / `下周调整（可执行）` into the bullets above unless they add distinct signal.
+14. In `评分与进度`, include a numeric 1-10 score and brief anchors when evidence supports it: work-side score, personal-side score, and whether the trend is up/down/flat versus the prior week.
+15. In `核心产出`, split real deliverables from input or learning. Use labels like `已形成输出` and `已完成输入` when the week has both.
+16. In `顺延项判断`, classify recurring carry-over items one by one. State whether to keep the current priority, suggest downgrading, move to a better time slot, or defer. Priority changes should be phrased as recommendations unless the user has decided them.
 
 ## Output
 
 - **In chat (Phase 2)**: quarterly OKR progress overview per Objective, this week's progress mapping, remaining time analysis, priority-ranked task recommendations (P0/P1/defer), risks and blockers.
 - **Recommended chat structure (Phase 2)**:
   - `OKR 进展总览`
-  - `整体评价`
-  - `特别注意的事情`
-  - `接下来特别需要推进的事项`
+  - `评分与进度`
+  - `特别注意`
+  - `下周安排`
   - If the week is still in progress, prepend `统计截至 {Today}`.
 - **Recommended file structure (Phase 3)**:
-  - `进度评估`
+  - `评分与进度`
   - `一句话总结`
+  - `核心产出`
   - `关键观察`
-  - `特别注意的事情`
-  - `接下来特别需要推进的事项`
+  - `顺延项判断`
+  - `下周安排`
+  - `特别注意`
 - **In file (Phase 3)**: preserve the local naming and tone instead of forcing a new review title. Write the weekly review section only after user confirmation.
 
 ## Guardrails
@@ -89,6 +99,7 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
 - If Obsidian is not running, fall back to reading vault files directly with the Read tool.
 - Support non-standard week spans such as holiday blocks. Do not assume every week covers exactly seven days.
 - When planning a new week, use the month-level focus/candidate section as the priority source and preserve the P0/P1/P2 intent unless the user changes it.
+- Keep week plans easy to execute. Avoid breaking every task into procedural microsteps; use short notes instead when a constraint or timing preference matters.
 - Keep the edit inside the target week block and before the next week heading.
 - Ignore malformed checklist lines and explanatory bullets without checkboxes.
 - If more than one week heading could match, prefer the heading explicitly named by the user or the one containing today's date. If ambiguity remains, explain it before editing.

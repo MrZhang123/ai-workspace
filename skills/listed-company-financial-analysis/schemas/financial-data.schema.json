@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Listed Company Financial Data",
+  "type": "object",
+  "required": ["company", "periods"],
+  "properties": {
+    "company": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "ticker": { "type": "string" },
+        "exchange": { "type": "string" },
+        "currency": { "type": "string" },
+        "unit": { "type": "string", "description": "Original reporting unit. Example: RMB millions, HKD billions, USD millions" },
+        "fiscal_year_end": { "type": "string" },
+        "accounting_standard": { "type": "string" },
+        "analysis_date": { "type": "string" }
+      }
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "display_currency": { "type": "string", "description": "Single-company financial statement display defaults to the company's reporting currency; comparison reports use the selected comparison currency. Top stock-price cards use valuation.price_currency first." },
+        "display_unit": { "type": "string", "description": "Example: RMB millions, HKD billions, USD millions" },
+        "currency_policy": { "type": "string", "description": "How source currencies are translated for display" }
+      }
+    },
+    "exchange_rates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_currency": { "type": "string" },
+          "target_currency": { "type": "string" },
+          "rate": { "type": "number", "description": "Target currency units per 1 source currency unit" },
+          "date": { "type": "string" },
+          "rate_type": { "type": "string", "description": "spot, average, period_end, or other" },
+          "source": { "type": "string" },
+          "use": { "type": "string", "description": "Example: income statement display, balance sheet display, market price display" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "type": { "type": "string" },
+          "path_or_url": { "type": "string" },
+          "period": { "type": "string" },
+          "currency": { "type": "string" },
+          "accounting_basis": { "type": "string" },
+          "retrieved_at": { "type": "string" }
+        }
+      }
+    },
+    "periods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label"],
+        "properties": {
+          "label": { "type": "string" },
+          "days": { "type": "number", "default": 365 },
+          "source_id": { "type": "string" },
+          "revenue": { "type": "number" },
+          "gross_profit": { "type": "number" },
+          "cogs": { "type": "number" },
+          "operating_profit": { "type": "number" },
+          "ebit": { "type": "number" },
+          "pretax_income": { "type": "number" },
+          "tax_expense": { "type": "number" },
+          "net_income": { "type": "number" },
+          "adjusted_net_income": { "type": "number" },
+          "operating_cash_flow": { "type": "number" },
+          "capital_expenditure": { "type": "number", "description": "Use positive number for cash spent on capex" },
+          "free_cash_flow": { "type": "number" },
+          "total_assets": { "type": "number" },
+          "current_assets": { "type": "number" },
+          "cash_and_equivalents": { "type": "number" },
+          "short_term_investments": { "type": "number" },
+          "accounts_receivable": { "type": "number" },
+          "inventories": { "type": "number" },
+          "total_liabilities": { "type": "number" },
+          "current_liabilities": { "type": "number" },
+          "accounts_payable": { "type": "number" },
+          "interest_bearing_debt_current": { "type": "number" },
+          "interest_bearing_debt_noncurrent": { "type": "number" },
+          "long_term_debt": { "type": "number" },
+          "shareholders_equity": { "type": "number" },
+          "interest_expense": { "type": "number" },
+          "dividends_paid": { "type": "number" },
+          "debt_repayment": { "type": "number" },
+          "shares_outstanding": { "type": "number" },
+          "wacc": { "type": "number" },
+          "segments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "revenue": { "type": "number" },
+                "profit": { "type": "number" },
+                "margin": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "valuation": {
+      "type": "object",
+      "properties": {
+        "current_price": { "type": "number" },
+        "price_currency": { "type": "string" },
+        "market_cap": { "type": "number" },
+        "enterprise_value": { "type": "number" },
+        "quote_source": { "type": "string" },
+        "quote_date": { "type": "string" },
+        "dcf": {
+          "type": "object",
+          "properties": {
+            "discount_rate": { "type": "number" },
+            "terminal_growth_rate": { "type": "number" },
+            "net_cash": { "type": "number" },
+            "shares_outstanding": { "type": "number" },
+            "scenarios": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "base_fcf": { "type": "number" },
+                  "growth_rates": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "discount_rate": { "type": "number" },
+                  "terminal_growth_rate": { "type": "number" },
+                  "net_cash": { "type": "number" },
+                  "shares_outstanding": { "type": "number" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
