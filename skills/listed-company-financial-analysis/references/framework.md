@@ -196,6 +196,8 @@ Analyze:
 
 Good capital allocation should show up in per-share value, not only company size.
 
+**State-owned enterprise (SOE) governance risk:** If the company is controlled by a local government (municipal or provincial SASAC) that created it from scratch and remains the dominant shareholder, additionally reference `references/governance-risks.md`. Standard "rational actor" assumptions about profit maximization, capital discipline, and management incentives may not fully apply.
+
 ## 9. Short Case / Negative Case
 
 This is the user's "空头情形" step. It is not only a generic risk list. Stand on the opposite side of the thesis and ask why the investment could fail, why investors may sell or short the stock, and what evidence would prove the short case right.
