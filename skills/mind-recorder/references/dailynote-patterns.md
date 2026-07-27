@@ -154,11 +154,31 @@ A rough guideline: if the content would be more than ~300 characters or has inte
 
 ## Obsidian Features Used
 
-- **Callouts**: `> [!tip]`, `> [!summary]`
+- **Callouts**: `> [!tip]`, `> [!summary]`, `> [!note] AI 评价`
 - **Embeds**: `![[filename#heading]]`, `![[filename]]`
 - **Tags**: Inline `#tag` format (not YAML frontmatter)
 - **Images**: `![[image.jpg|300]]` with optional width
 - **Links**: Standard markdown links and wikilinks
+
+## AI Evaluation Callout
+
+Each thought entry may include a rational, objective AI evaluation. Always use the `> [!note] AI 评价` callout format, placed after the user's polished content and a blank line, before the next entry's heading:
+
+```markdown
+## 08.15 阅读量下降可能不是因为内容变差了
+
+#阅读 #认知 #想法
+
+最近发现自己的阅读量明显下降，一开始以为是推荐算法变差了或者好内容变少了。但仔细想了一下，可能根本原因不在外部——是我的注意力被短视频和社交媒体切得太碎，已经不太习惯长时间专注阅读了。不是内容的问题，是我自己变了。
+
+> [!note] AI 评价
+> 这个反思把归因从外部转向了内部，方向是对的。注意力碎片化是一个被广泛讨论但很少被个人认真对号入座的问题。值得进一步追问的是：短视频的"高刺激密度"是否在系统性地拉高了大脑对信息密度的预期，导致文字阅读这种"低刺激密度"的输入方式变得难以忍受。如果这个机制成立，那不只是一个习惯问题，而是一个生理层面的适应性问题。
+```
+
+The evaluation should be:
+- **Rational and objective**: analyze from a logical, systemic, or structural perspective
+- **Not emotional**: avoid empty praise, forced agreement, or subjective cheerleading
+- **Substantive**: add analytical depth — connect to broader patterns, surface hidden assumptions, or point out implications the user may not have considered
 
 ## Vault Path Resolution
 

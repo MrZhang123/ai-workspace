@@ -48,6 +48,9 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
    - **Can defer**: items safe to push to next week with rationale.
    - Preserve the source priority labels. Do not describe a P1 task as P0 unless the user explicitly promotes it or the current week plan already does so.
    - Call out risks: carry-over items, KRs falling behind pace, blockers.
+   - **Month/quarter-end detection**: Before finalizing `下周安排`, check whether the planned week is the last of a month or quarter. See [references/obsidian-weekly-patterns.md#7-monthquarter-end-detection](references/obsidian-weekly-patterns.md#7-monthquarter-end-detection).
+     - If the planned week is the last of a quarter (contains Mar 31, Jun 30, Sep 30, or Dec 31): add a `📅 周期复盘提醒` subsection under `下周安排` with `- [ ] P0：完成季度复盘`. Do NOT also add month review.
+     - If the planned week is the last of a month (but not quarter-end): add a `📅 周期复盘提醒` subsection under `下周安排` with `- [ ] P0：完成月度复盘`.
    - Keep next-week plans concise: prefer parent tasks and clear priorities; add subtasks only for concrete deliverables, deadlines, or known constraints. Default to 1-2 main P0 focuses for the week; move other items into light parallel work or deferral.
 7. If the week is still in progress, say `统计截至 {Today}` in chat output.
 8. **Wait for user confirmation before writing to the file.** The user may want to adjust priorities or add/remove items.
@@ -83,6 +86,7 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
   - `评分与进度`
   - `特别注意`
   - `下周安排`
+    - If the planned week is the last of a month or quarter, append a `📅 周期复盘提醒` subsection at the end of `下周安排`.
   - If the week is still in progress, prepend `统计截至 {Today}`.
 - **Recommended file structure (Phase 3)**:
   - `评分与进度`
@@ -91,6 +95,7 @@ Read [references/obsidian-weekly-patterns.md](references/obsidian-weekly-pattern
   - `关键观察`
   - `顺延项判断`
   - `下周安排`
+    - If the planned week is the last of a month or quarter, append a `📅 周期复盘提醒` subsection at the end of `下周安排`.
   - `特别注意`
 - **In file (Phase 3)**: preserve the local naming and tone instead of forcing a new review title. Write the weekly review section only after user confirmation.
 

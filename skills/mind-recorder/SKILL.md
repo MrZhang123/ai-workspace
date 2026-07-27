@@ -25,29 +25,37 @@ Listen to what the user wants to record. Identify:
 - **Tags**: relevant tags (e.g., `#ai`, `#认知`, `#想法`, `#活动`). Suggest tags based on content if the user doesn't specify — see the reference for commonly used tags.
 - **Content**: the actual thought — could be a single sentence or a long essay
 
-### 2. Determine the target file
+### 2. Polish and evaluate
+
+Before writing, do two things:
+
+- **Polish**: Refine the user's raw thought into clearer, more structured Chinese while preserving their voice and intent. Fix typos, smooth out awkward phrasing, and add logical flow where needed — but don't change the core idea.
+- **Evaluate**: Write a rational, objective evaluation from a logical or systemic perspective. Analyze the idea's validity, implications, or connections to broader patterns. Avoid emotional language, empty praise, or forced agreement. The evaluation goes into a `> [!note] AI 评价` callout appended after the polished content, separated by a blank line.
+
+### 3. Determine the target file
 
 Based on today's date (or a date the user specifies):
 
 - **Summary file**: `DailyNote/{YYYY}/{YYYY} 想法汇总.md` — always updated; this is where all entries are indexed
 - **Standalone file**: `DailyNote/{YYYY}/{YYYY-MM-DD}.md` — created only for longer entries, referenced via embed in the summary
 
-### 3. Decide inline vs. standalone
+### 4. Decide inline vs. standalone
 
 - **Short thoughts** (a few sentences, under ~300 characters): write content directly inline in the summary file.
 - **Long thoughts** (multiple paragraphs, structured content with sub-headings): create a standalone `{YYYY-MM-DD}.md` file, then add an embed reference (`![[{YYYY-MM-DD}#标题]]`) in the summary file.
 - If a standalone file for that date already exists, append the new content as a new `#` heading section rather than overwriting — the user may record multiple thoughts in one day.
 
-### 4. Write to the vault
+### 5. Write to the vault
 
 Use the `obsidian` CLI when Obsidian is running. Fall back to direct file editing if Obsidian is not available.
 
 1. Read the current summary file to check existing structure.
 2. Find the correct month section (`# {N}月`). If it doesn't exist yet, create it at the top of the file — months are ordered newest-first.
 3. Insert the new entry under the correct month section. Entries within a month are also newest-first.
-4. For standalone files, create via `obsidian create` with the `silent` flag, or use the Write tool directly.
+4. Append the AI evaluation callout after the polished content, separated by a blank line. See `references/dailynote-patterns.md` for the exact format.
+5. For standalone files, create via `obsidian create` with the `silent` flag, or use the Write tool directly.
 
-### 5. Confirm to the user
+### 6. Confirm to the user
 
 After recording, briefly confirm: the file path, title, tags, and whether it was inline or standalone.
 
@@ -63,6 +71,9 @@ After recording, briefly confirm: the file path, title, tags, and whether it was
 #ai #认知
 
 我觉得现在很多人对 AI 的使用还停留在问答层面，真正用 Agent 去解决复杂工作流的人很少
+
+> [!note] AI 评价
+> 这个观察点出了 AI 普及中的一个断层：工具能力已经基本到位，但使用模式尚未跟上。大多数人仍把 AI 当作"更聪明的搜索引擎"，而非"可编排任务链的执行引擎"。这种落差背后既有认知门槛，也有产品形态的因素——当前 AI 交互界面多围绕单轮对话设计，而 Agent 工作流需要任务编排、状态管理和结果校验的全链路支持。从单次问答到全流程自动化的迁移，可能是下一波效率提升的关键方向。
 ```
 
 **And replies**: "已记录到 DailyNote/{YYYY}/{YYYY} 想法汇总.md，标题「大多数人对 AI 的使用还停留在问答层面」，标签 #ai #认知"
@@ -70,7 +81,8 @@ After recording, briefly confirm: the file path, title, tags, and whether it was
 ## Guardrails
 
 - Always read the existing summary file before editing — the file has a specific ordering and structure that's easy to break if you insert blindly.
-- Preserve the user's writing voice. The note is the user's thought, not yours — organize lightly if needed, but don't rewrite or add commentary.
+- Polish the user's thought to improve clarity and structure, but preserve their writing voice and core ideas. Don't alter the substance of what they're saying.
+- Always append a rational, objective AI evaluation using the `> [!note] AI 评价` callout format. Place it after the user's content, separated by a blank line. The evaluation should analyze from a logical or systemic perspective — avoid emotional language, empty praise, or forced agreement.
 - If the user's thought includes links, quotes, or references, use Obsidian-flavored markdown (callouts `> [!tip]`, embeds `![[...]]`, etc.) to preserve them naturally.
 - When creating a new year's directory or summary file, follow the existing `{YYYY} 想法汇总.md` convention exactly.
 - Avoid creating entries for future dates — the DailyNote system is a record of thoughts as they happen, so forward-dating would break the chronological intent.

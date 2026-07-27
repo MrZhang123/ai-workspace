@@ -92,6 +92,56 @@ Priority and evidence rules:
 - Call out day-record gaps or week-after completion marks when they affect evidence quality.
 - Account for fixed constraints such as leave, travel, appointments, shareholder meetings, health treatment, passport pickup, or account setup before estimating capacity.
 
+## 7. Month/Quarter-End Detection
+
+When generating `下周安排` during a weekly review, check whether the planned week is the last week of a month or quarter. This ensures month-review and quarter-review tasks are not forgotten.
+
+### Detection Rule
+
+- A week is the **last week of month M** if the week's date range contains the last calendar day of month M.
+- A week is the **last week of quarter Q** if the week's date range contains the last calendar day of that quarter (Mar 31, Jun 30, Sep 30, Dec 31).
+
+### How to Check
+
+1. Parse the week heading text (e.g., `07.28～08.02`) to get the start date and end date.
+2. Determine which months the week's range overlaps. If the week spans across months (e.g., `01.26～02.01`), check each overlapping month.
+3. Compute the last calendar day of each overlapping month:
+   - Jan / Mar / May / Jul / Aug / Oct / Dec → 31
+   - Apr / Jun / Sep / Nov → 30
+   - Feb → 28 (29 in leap years; 2026 is not a leap year)
+4. Check in order:
+   - If the last day of a **quarter-end month** (Mar, Jun, Sep, Dec) falls within the week → **quarter end**.
+   - Else if the last day of **any month** falls within the week → **month end**.
+
+### Action
+
+- **Quarter end**: In `下周安排`, add a `📅 周期复盘提醒` subsection with `- [ ] P0：完成季度复盘` plus a note that this week is the last of the quarter. Do NOT add month review separately — the quarter review naturally covers month-level content.
+- **Month end (non-quarter)**: In `下周安排`, add a `📅 周期复盘提醒` subsection with `- [ ] P0：完成月度复盘` plus a note that this week is the last of the month.
+
+Quarter-end reminder format:
+
+```markdown
+### 📅 周期复盘提醒
+- [ ] P0：完成季度复盘（本周是本季度最后一周）
+```
+
+Month-end reminder format:
+
+```markdown
+### 📅 周期复盘提醒
+- [ ] P0：完成月度复盘（本周是本月最后一周）
+```
+
+### Examples
+
+| Week range | Contains | Trigger |
+|------------|----------|---------|
+| 07.27～08.02 | Jul 31 | Month end (July) |
+| 09.28～10.04 | Sep 30 | Quarter end (Q3) — month review NOT added |
+| 03.23～03.29 | — | Nothing |
+| 01.26～02.01 | Jan 31 | Month end (January) |
+| 12.28～01.03 | Dec 31 | Quarter end (Q4) — month review NOT added |
+
 If no local weekly review style exists yet, use this fallback:
 
 ```markdown
